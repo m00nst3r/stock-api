@@ -1,15 +1,35 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const Privat24Module = require('./modules/PrivatModule');
 const app = express();
+const PORT = 3001;
 
-app.get('/', (req, res) => {
-    res.json({"hello": "world"})
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS');
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
 });
+
+app.use(bodyParser.json({ type: 'application/*+json' }));
+
+mongoose.connect('mongodb://localhost/test', {
+    useMongoClient: true
+});
+
+const db = mongoose.connection;
+
+db.on('error', console.error.bind(console, 'connection error:'));
+
+app.get('/api/currency/ukraine/p24', Privat24Module.getCurrencyFromPrivatAPI);
+
+app.get('/api/ukraine/', Privat24Module.getLatestPrivatCurrency);
 
 app.get('/health', (req, res) => {
     res.status(200).json({"status": "up"})
 });
 
-app.listen(3000, function () {
-    console.log('Example app listening on port 3000!')
+app.listen(PORT, function () {
+    console.log('Listening on port %s!', PORT)
 });
