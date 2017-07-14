@@ -1,7 +1,4 @@
-const mongoose = require('mongoose');
 const request = require('request');
-const currencyScheme = require('../schemas/CurrencyScheme');
-const EuropeanCentralBankCurrency = mongoose.model('EuropeanCentralBankCurrency', currencyScheme);
 const utils = require('../utils');
 
 function getCurrencyFromECB(req, res) {
@@ -19,14 +16,12 @@ function getCurrencyFromECB(req, res) {
 }
 
 function getLatestECBCurrency (req, res) {
-    EuropeanCentralBankCurrency.find().limit(1).sort({$natural:-1}).then(item => {
-        res.json({"response": Object.assign({}, {
-            id: item[0]._id,
-            name: item[0].name,
-            date: item[0].date,
-            base: item[0].base || null,
-            currency: item[0].currency
-        })})
+    utils.getLatestCurrencyFromDataBase('EuropeanCentralBankCurrency')
+        .then(item => {
+            res.json({"response": item});
+        }).catch(err => {
+        console.log('err');
+        console.log(err);
     })
 }
 

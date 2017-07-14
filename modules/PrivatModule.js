@@ -1,7 +1,4 @@
-const mongoose = require('mongoose');
 const request = require('request');
-const currencyScheme = require('../schemas/CurrencyScheme');
-const PrivatCurrency = mongoose.model('PrivatCurrency', currencyScheme);
 const utils = require('../utils');
 
 function getCurrencyFromPrivatAPI(req, res) {
@@ -23,15 +20,13 @@ function getCurrencyFromPrivatAPI(req, res) {
 }
 
 function getLatestPrivatCurrency (req, res) {
-    PrivatCurrency.find().limit(1).sort({$natural:-1}).then(item => {
-        res.json({"response": Object.assign({}, {
-            id: item[0]._id,
-            name: item[0].name,
-            date: item[0].date,
-            base: item[0].base || null,
-            currency: item[0].currency
-        })})
-    })
+    utils.getLatestCurrencyFromDataBase('PrivatCurrency')
+        .then(item => {
+            res.json({"response": item});
+        }).catch(err => {
+            console.log('err');
+            console.log(err);
+        })
 }
 
 module.exports = {

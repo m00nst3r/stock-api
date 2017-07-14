@@ -17,6 +17,20 @@ saveCurrencyToDataBase = (data, bankName, collectionName) => {
         .catch(err => {console.log(err);});
 };
 
+getLatestCurrencyFromDataBase = (collectionName) => {
+    const BankCurrency = mongoose.model(collectionName, currencyScheme);
+    return BankCurrency.find().limit(1).sort({$natural:-1}).then(item => {
+        return Object.assign({}, {
+            id: item[0]._id,
+            name: item[0].name,
+            date: item[0].date,
+            base: item[0].base || null,
+            currency: item[0].currency
+        });
+    })
+};
+
 module.exports = {
-    saveCurrencyToDataBase
+    saveCurrencyToDataBase,
+    getLatestCurrencyFromDataBase
 };
