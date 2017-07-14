@@ -2,8 +2,16 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const Privat24Module = require('./modules/PrivatModule');
+const EuropeanCentralBankModule = require('./modules/EuropeanCentralBankModule');
 const app = express();
 const PORT = 3001;
+const db = mongoose.connection;
+
+mongoose.connect('mongodb://localhost/test', {
+    useMongoClient: true
+});
+
+db.on('error', console.error.bind(console, 'connection error:'));
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -14,17 +22,13 @@ app.use(function(req, res, next) {
 
 app.use(bodyParser.json({ type: 'application/*+json' }));
 
-mongoose.connect('mongodb://localhost/test', {
-    useMongoClient: true
-});
-
-const db = mongoose.connection;
-
-db.on('error', console.error.bind(console, 'connection error:'));
-
 app.get('/api/currency/ukraine/p24', Privat24Module.getCurrencyFromPrivatAPI);
 
 app.get('/api/ukraine/', Privat24Module.getLatestPrivatCurrency);
+
+app.get('/api/currency/europe/ecb/', EuropeanCentralBankModule.getCurrencyFromECB);
+
+app.get('/api/ecb/', EuropeanCentralBankModule.getLatestECBCurrency);
 
 app.get('/health', (req, res) => {
     res.status(200).json({"status": "up"})

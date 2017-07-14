@@ -7,6 +7,7 @@ saveCurrencyFromP24 = (currency) => {
     const privatCurrency = new PrivatCurrency({
         name: 'Privat Bank 24',
         currency: currency,
+        base: 'UAH',
         date: new Date()
     });
 
@@ -37,6 +38,7 @@ function getLatestPrivatCurrency (req, res) {
             id: item[0]._id,
             name: item[0].name,
             date: item[0].date,
+            base: item[0].base || null,
             currency: item[0].currency
         })})
     })
