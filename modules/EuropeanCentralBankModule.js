@@ -1,23 +1,8 @@
 const mongoose = require('mongoose');
 const request = require('request');
-const privatSchema = require('../schemas/PrivatScheme');
-const EuropeanCentralBankCurrency = mongoose.model('EuropeanCentralBankCurrency', privatSchema);
-
-
-saveCurrencyFromECB = (data) => {
-    const Currency = new EuropeanCentralBankCurrency({
-        name: 'European Central Bank',
-        currency: data.rates,
-        base: data.base,
-        date: new Date()
-    });
-
-    Currency.save()
-        .then(() => {
-            console.log('Saved From European Central Bank to db');
-        })
-        .catch(err => {console.log(err);});
-};
+const currencyScheme = require('../schemas/CurrencyScheme');
+const EuropeanCentralBankCurrency = mongoose.model('EuropeanCentralBankCurrency', currencyScheme);
+const utils = require('../utils');
 
 function getCurrencyFromECB(req, res) {
     request.get('http://api.fixer.io/latest', (error, response, body) => {
@@ -27,7 +12,7 @@ function getCurrencyFromECB(req, res) {
         if(response.statusCode !== 200 ) {
             console.log('1111');
         } else {
-            saveCurrencyFromECB(JSON.parse(body));
+            utils.saveCurrencyToDataBase(JSON.parse(body), 'European Central Bank', 'EuropeanCentralBankCurrency');
             res.json({'response': JSON.parse(body)});
         }
     });

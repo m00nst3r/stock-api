@@ -1,22 +1,8 @@
 const mongoose = require('mongoose');
 const request = require('request');
-const privatSchema = require('../schemas/PrivatScheme');
-const PrivatCurrency = mongoose.model('PrivatCurrency', privatSchema);
-
-saveCurrencyFromP24 = (currency) => {
-    const privatCurrency = new PrivatCurrency({
-        name: 'Privat Bank 24',
-        currency: currency,
-        base: 'UAH',
-        date: new Date()
-    });
-
-    privatCurrency.save()
-        .then(() => {
-            console.log('Saved From Privat 24 to db');
-        })
-        .catch(err => {console.log(err);});
-};
+const currencyScheme = require('../schemas/CurrencyScheme');
+const PrivatCurrency = mongoose.model('PrivatCurrency', currencyScheme);
+const utils = require('../utils');
 
 function getCurrencyFromPrivatAPI(req, res) {
     request.get('https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=4', (error, response, body) => {
@@ -26,8 +12,12 @@ function getCurrencyFromPrivatAPI(req, res) {
         if(response.statusCode !== 200 ) {
             console.log('1111');
         } else {
-            saveCurrencyFromP24(JSON.parse(body));
-            res.json({'response': JSON.parse(body)});
+            const data = Object.assign({}, {
+                rates: JSON.parse(body),
+                base: "UAH"
+            });
+            utils.saveCurrencyToDataBase(data, 'Privat Bank 24', 'PrivatCurrency');
+            res.json({'response': data});
         }
     });
 }
