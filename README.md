@@ -24,4 +24,4 @@ Also user can load all currency
 
 ## Server
 
-By defauld server runs on `3001` port
+By default server runs on `3001` port
