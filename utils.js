@@ -1,21 +1,28 @@
 const mongoose = require('mongoose');
 const currencyScheme = require('./schemas/CurrencyScheme');
 
-saveCurrencyToDataBase = (data, bankName, collectionName) => {
+/**
+ * Save currency to database
+ * @param data {Object} contains fields rates and base
+ * @param bankName {String} Bank or Source name
+ * @param collectionName {String} Name of collection in database
+ */
+function saveCurrencyToDataBase (data, bankName, collectionName) {
     const BankCurrency = mongoose.model(collectionName, currencyScheme);
+    const date = data.date ? new Date(data.date) : new Date();
     const Currency = new BankCurrency({
         name: bankName,
         currency: data.rates,
         base: data.base,
-        date: new Date()
+        date: date
     });
 
     Currency.save()
         .then(() => {
-            console.log(`Saved ${bankName} Bank to db`);
+            console.log(`Saved ${bankName} Bank to db with date ${data.date}`);
         })
         .catch(err => {console.log(err);});
-};
+}
 
 getLatestCurrencyFromDataBase = (collectionName) => {
     const BankCurrency = mongoose.model(collectionName, currencyScheme);

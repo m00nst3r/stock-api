@@ -9,8 +9,10 @@
   },
   "dependencies": {
     "body-parser": "^1.17.2",
-    "express": "^4.15.3",
-    "mongoose": "^4.11.1",
+    "express": "^4.15.4",
+    "moment": "^2.18.1",
+    "mongoose": "^4.11.6",
+    "promise": "^8.0.1",
     "request": "^2.81.0"
   },
   "repository": {
