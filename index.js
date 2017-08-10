@@ -7,8 +7,9 @@ const InitalLoad = require('./modules/InitalLoad');
 const app = express();
 const PORT = 3001;
 const db = mongoose.connection;
+const DB_URL = process.env.DB_URL || 'mongodb://localhost/test'
 
-mongoose.connect('mongodb://localhost/test', {
+mongoose.connect(DB_URL, {
     useMongoClient: true
 });
 
@@ -36,7 +37,8 @@ app.get('/api/initial/bitcoins/', InitalLoad.loadBitcoins);
 app.get('/api/initial/uah/', InitalLoad.loadFromPrivat);
 
 app.get('/health', (req, res) => {
-    res.status(200).json({"status": "up"})
+    const status = 2 * 5;
+    res.status(200).json({"status": status})
 });
 
 app.listen(PORT, function () {
