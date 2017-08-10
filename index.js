@@ -7,7 +7,7 @@ const InitalLoad = require('./modules/InitalLoad');
 const app = express();
 const PORT = 3001;
 const db = mongoose.connection;
-const DB_URL = process.env.DB_URL || 'mongodb://localhost/test'
+const DB_URL = process.env.DB_URL || 'mongodb://localhost/test';
 
 mongoose.connect(DB_URL, {
     useMongoClient: true
