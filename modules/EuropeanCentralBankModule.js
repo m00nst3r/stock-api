@@ -1,16 +1,26 @@
 const request = require('request');
 const utils = require('../utils');
+const Links = require('../Types/Links');
+const ItemTypes = require('../Types/ItemTypes');
 
 function getCurrencyFromECB(req, res) {
-    request.get('http://api.fixer.io/latest', (error, response, body) => {
+    request.get(`${Links.ecb}/ecb`, (error, response, body) => {
         if(error) {
             console.log(error);
         }
         if(response.statusCode !== 200 ) {
             console.log('1111');
         } else {
-            utils.saveCurrencyToDataBase(JSON.parse(body), 'European Central Bank', 'EuropeanCentralBankCurrency');
-            res.json({'response': JSON.parse(body)});
+            const item = JSON.parse(body);
+            const data = Object.assign({}, {
+                date: item.time,
+                base: 'EUR',
+                rates: item.Cube.map(i => Object.assign({}, {
+                    [i.currency]: i.rate
+                }))
+            });
+            utils.saveCurrencyToDataBase(data, ItemTypes.ecb.bankName, ItemTypes.ecb.collectionName);
+            res.json({'response': data});
         }
     });
 }

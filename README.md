@@ -21,6 +21,7 @@ Also user can load all currency
 
 * *GET* `/api/initial/bitcoins/` load Bitcoin currency from `coindesk` api
 * *GET* `/api/initial/uah/` load UAH currency from `privat24` api
+* *GET* `/api/initial/ecb/` load EUR currency from `European Central Bank` api
 
 ## Server
 
