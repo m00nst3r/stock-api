@@ -1,4 +1,8 @@
 module.exports = {
     BitcoinsBank: 'Coindesk',
-    CoindeskBitcoins: 'CoindeskBitcoins'
+    CoindeskBitcoins: 'CoindeskBitcoins',
+    ecb: {
+        collectionName: 'EuropeanCentralBankCurrency',
+        bankName: 'European Central Bank'
+    }
 };

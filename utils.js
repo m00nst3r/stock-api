@@ -21,7 +21,22 @@ function saveCurrencyToDataBase (data, bankName, collectionName) {
         .then(() => {
             console.log(`Saved ${bankName} Bank to db with date ${data.date}`);
         })
-        .catch(err => {console.log(err);});
+        .catch(err => {
+            console.log("Error: ", err);
+        });
+}
+
+function saveBulkUploadToDataBase(data, bankName, collectionName) {
+    const promises = data.map(item => {
+        return saveCurrencyToDataBase(item, bankName, collectionName)
+    });
+    Promise.all(promises)
+        .then(resp => {
+            console.log(resp);
+        })
+        .catch(err => {
+            console.log("Error: ", err);
+        })
 }
 
 getLatestCurrencyFromDataBase = (collectionName) => {
@@ -39,5 +54,6 @@ getLatestCurrencyFromDataBase = (collectionName) => {
 
 module.exports = {
     saveCurrencyToDataBase,
-    getLatestCurrencyFromDataBase
+    getLatestCurrencyFromDataBase,
+    saveBulkUploadToDataBase
 };

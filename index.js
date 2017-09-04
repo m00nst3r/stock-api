@@ -36,6 +36,8 @@ app.get('/api/initial/bitcoins/', InitalLoad.loadBitcoins);
 
 app.get('/api/initial/uah/', InitalLoad.loadFromPrivat);
 
+app.get('/api/initial/ecb', InitalLoad.loadFromEBC);
+
 app.get('/health', (req, res) => {
     const status = 2 * 5;
     res.status(200).json({"status": status})
