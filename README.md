@@ -52,3 +52,7 @@ docker run --name stock-api -e DB_URL="mongodb://mongou_rl" -p 8080:3001 stock-a
 ```
 
 your application should run on [http://localhost:8080](http://localhost:8080)
+
+### TODO
+
+* Change all functions from using callbacks to promises ([Bluebird](http://bluebirdjs.com/))

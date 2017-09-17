@@ -7,10 +7,12 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "body-parser": "^1.17.2",
+    "bluebird": "^3.5.0",
+    "body-parser": "^1.18.1",
     "express": "^4.15.4",
     "moment": "^2.18.1",
-    "mongoose": "^4.11.6",
+    "mongoose": "^4.11.11",
+    "morgan": "^1.8.2",
     "promise": "^8.0.1",
     "request": "^2.81.0"
   },

@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const Privat24Module = require('./modules/PrivatModule');
 const EuropeanCentralBankModule = require('./modules/EuropeanCentralBankModule');
 const InitalLoad = require('./modules/InitalLoad');
+const logger = require('morgan');
 const app = express();
 const PORT = 3001;
 const db = mongoose.connection;
@@ -14,6 +15,8 @@ mongoose.connect(DB_URL, {
 });
 
 db.on('error', console.error.bind(console, 'connection error:'));
+
+app.use(logger('dev'));
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
